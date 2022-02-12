@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { FunctionComponent, useState } from 'react';
 import './App.css';
+import Search from './components/search';
+import TableComponent from './components/table';
 
-function App() {
+const initialState = {
+  page: 1,
+  pageSize: 5,
+  results: 20,
+};
+
+const App: FunctionComponent = () => {
+  const [querySearch, setQuerySearch] = useState(initialState);
+  const [trigger, setTrigger] = useState(true);
+
+  const handleSearch = (params: any) => {
+
+    setQuerySearch({
+      ...querySearch,
+      ...params,
+    })
+
+    setTrigger(!trigger);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        Example With Search and Filter
       </header>
+      <Search callback={handleSearch} />
+      <TableComponent trigger={trigger} params={querySearch} callback={handleSearch} />
     </div>
   );
 }
